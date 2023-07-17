@@ -1,0 +1,81 @@
+MDFloatLayout:
+    #size_hint: None, None
+    #size: 350, 600
+    MDLabel:
+        id: task_label
+        halign: 'center'
+        markup: True
+        text: "[u][size=35][b]Reminder App[/b][/size][/u]"
+        pos_hint: {'y': .45}
+
+    ScrollView:
+        pos_hint: {'center_y': .5, 'center_x': .5}
+        size_hint: .9, .8
+
+        MDList:
+            id: container
+
+
+    MDFloatingActionButton:
+        icon: 'plus-thick'
+        on_release: app.show_task_dialog()
+        elevation_normal: 12
+        pos_hint: {'x': .45 , 'y': .04}
+
+<DialogContent>:
+    size_hint: None, None
+    size: 350, 600
+    orientation: "vertical"
+    spacing : "10dp"
+    size_hint : 1, None
+    height: "130dp"
+
+    GridLayout:
+        rows:1
+
+        MDTextField:
+            id: task_text
+            hint_text :"Write reminder"
+            multiline: False
+            pos_hint:{"center_y": .4}
+            on_text_validate: (app.add_task(task_text, time_text.text), app.close_dialog())
+
+        MDIconButton:
+            icon: "clock"
+            #multiline : True
+            on_release : root.show_time_picker()
+            padding: "10dp"
+
+    MDLabel:
+        spacing: "10dp"
+        id: time_text
+        text_size: self.width, None
+        size_hint_y: None
+        height: self.texture_size[1]
+
+    BoxLayout:
+        orientation: "horizontal"
+
+        MDRaisedButton:
+            text:"Save"
+            on_release: (app.add_task(task_text, time_text.text),app.close_dialog())
+
+        MDFlatButton:
+            text:"Cancel"
+            on_release:app.close_dialog()
+
+<Delete>:
+    id: the_list_item
+    #multiline: True
+    #orientation:"vertical"
+    markup: True
+
+    IconRightWidget:
+        icon: "trash-can-outline"
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+        on_release:root.delete(the_list_item)
+
+
+
+
